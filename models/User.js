@@ -41,7 +41,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    salt: String
+    salt: String,
+    resetToken: {
+        type: String
+    },
+    resetExpires: {
+        type: Date
+    }
 }, { timestamps: true });
 
 userSchema.virtual("password")
