@@ -98,7 +98,6 @@ exports.doResetPassword = (req, res) => {
 
     // Find the user in the database
     User.findOne({ email }, (err, user) => {
-        console.log({user})
         if (err || !user) {
             return res.status(404).send({error: 'User not found'});
         }
@@ -129,14 +128,12 @@ exports.doResetPassword = (req, res) => {
 
 exports.createNewPassword = (req, res) => {
     const {password, token} = req.body;
-    console.log({ password, token })
 
     // Find the user in the database by the token
     User.findOne(
         {resetToken: token, resetExpires: {$gt: Date.now()}},
         (err, user) => {
             if (err || !user) {
-                console.log({err, user})
                 // Handle error or token not found or invalid
                 return res.status(404).json({
                     error: 'Token not found or expired'
