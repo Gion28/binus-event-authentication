@@ -1,5 +1,5 @@
 const express = require("express");
-const { doRegistration, doLogin, checkToken } = require('../controllers/user');
+const { doRegistration, doLogin, doResetPassword, createNewPassword, checkToken } = require('../controllers/user');
 const { check } = require("express-validator");
 
 const router = express();
@@ -13,6 +13,14 @@ router.post('/registration', [
 
 router.post('/login', doLogin);
 
-router.post('/check_token', checkToken);
+router.get('/logout', (req, res) => {
+    res.status(200).send({ auth: false, token: null });
+});
+
+router.post('/reset-password', doResetPassword);
+
+router.post('/new-password', createNewPassword);
+
+router.post('/check-token', checkToken);
 
 module.exports = router;
