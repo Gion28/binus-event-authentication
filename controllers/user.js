@@ -67,14 +67,14 @@ const sendEmail = (email, token) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'your-email-address@gmail.com', // Ini pake gmail admin
-            pass: 'your-email-password',
+            user: process.env.USER_SECRET,
+            pass: process.env.PASSWORD_SECRET,
         }
     });
 
     // Create the email message
     const mailOptions = {
-        from: '"Your name" <your-email-address@gmail.com>',
+        from: `"Admin Binus Event" <${process.env.USER_SECRET}@gmail.com>`,
         to: email,
         subject: 'Password reset link',
         text: `You are receiving this email because you (or someone else) has requested a password reset for your account.
@@ -129,12 +129,14 @@ exports.doResetPassword = (req, res) => {
 
 exports.createNewPassword = (req, res) => {
     const {password, token} = req.body;
+    console.log({ password, token })
 
     // Find the user in the database by the token
     User.findOne(
         {resetToken: token, resetExpires: {$gt: Date.now()}},
         (err, user) => {
             if (err || !user) {
+                console.log({err, user})
                 // Handle error or token not found or invalid
                 return res.status(404).json({
                     error: 'Token not found or expired'
@@ -146,7 +148,7 @@ exports.createNewPassword = (req, res) => {
 
             // Save the new password to the user's account
             User.findByIdAndUpdate(user._id,
-                {password: hashedPassword},
+                {encry_password: hashedPassword},
                 {new: true, useFindAndModify: false},
                 (err) => {
                     if (err) {
