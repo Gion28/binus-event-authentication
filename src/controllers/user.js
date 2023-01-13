@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const fs = require('fs');
 const User = require('../models/User');
 
 const {
@@ -36,6 +37,36 @@ exports.doRegistration = (req, res) => {
       user
     });
   });
+};
+
+exports.uploadImageProfileData = (req, res, next) => {
+  try {
+    const { path, mimetype } = req.file;
+    const { nim } = req.body;
+
+    fs.readFile(path,async (err, data) => {
+      if (err) throw err;
+
+      await User.updateOne(
+        { nim },
+        {
+          $set: {
+            image: {
+              data,
+              contentType: mimetype
+            }
+          }
+        }
+      );
+    });
+    res
+      .status(HTTP_STATUS_OK)
+      .json({
+        message: 'Image profile has been successfully uploaded!'
+      });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.doLogin = (req, res) => {
@@ -154,7 +185,11 @@ exports.createNewPassword = (req, res) => {
 
       // Save the new password to the user's account
       User.findByIdAndUpdate(user._id,
-        { encrypt_password: hashedPassword },
+        {
+          encrypt_password: hashedPassword,
+          resetToken: null,
+          resetExpires: null
+        },
         { new: true, useFindAndModify: false },
         (err) => {
           if (err) {

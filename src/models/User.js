@@ -37,6 +37,10 @@ const userSchema = new mongoose.Schema({
     enum: ['Male', 'Female'],
     require: true
   },
+  image: {
+    data: Buffer,
+    contentType: String
+  },
   encrypt_password: {
     type: String,
     required: true,
