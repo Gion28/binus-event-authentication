@@ -6,6 +6,7 @@ const {
   doLogin,
   doResetPassword,
   createNewPassword,
+  updateProfileByUserId,
   checkToken
 } = require('../controllers/user');
 const { upload } = require('../middlewares/MulterHandler');
@@ -20,6 +21,8 @@ router.post('/registration', [
 ], doRegistration);
 
 router.post('/upload-profile', upload.single('image'), uploadImageProfileData);
+
+router.put('/update-profile/:userId', updateProfileByUserId);
 
 router.post('/login', doLogin);
 
