@@ -20,7 +20,7 @@ router.post('/registration', [
   check('password', 'Password should be at least 6 characters').isLength({ min: 6 })
 ], doRegistration);
 
-router.post('/upload-profile', upload.single('picture'), uploadImageProfileData);
+router.post('/upload-profile', upload.single('image'), uploadImageProfileData);
 
 router.put('/update-profile/:userId', [
   check('name', 'Name should be at least 4 characters').isLength({ min: 4 }),
