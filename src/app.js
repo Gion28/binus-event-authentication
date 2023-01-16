@@ -24,16 +24,17 @@ app.use((req, res, next) => {
 // Use parsing middleware
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, { explorer: true }));
 app.use(express.json(), loggerHandler(app));
-app.use(errorHandler);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
 
 // Set EJS as templating engine
-app.set('view engine', 'ejs');
+app.set('view engine', 'pug');
 
 indexRoutes(app);
+
+app.use(errorHandler);
 
 // DB Connection
 mongoose

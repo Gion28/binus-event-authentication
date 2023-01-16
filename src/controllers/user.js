@@ -1,12 +1,13 @@
 import HttpStatusConstants from '../constants/HttpStatusConstants';
+import User from '../models/User';
 
+const mongoose = require('mongoose');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const fs = require('fs');
-const User = require('../models/User');
 
 const {
   HTTP_STATUS_OK,
@@ -44,7 +45,7 @@ exports.uploadImageProfileData = (req, res, next) => {
     const { path, mimetype } = req.file;
     const { nim } = req.body;
 
-    fs.readFile(path,async (err, data) => {
+    fs.readFile(path, async (err, data) => {
       if (err) throw err;
 
       await User.updateOne(
@@ -204,6 +205,23 @@ exports.createNewPassword = (req, res) => {
         });
     }
   );
+};
+
+exports.updateProfileByUserId = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    await User.updateOne(
+      { _id: new mongoose.Types.ObjectId(userId) },
+      { $set: req.body }
+    );
+    res
+      .status(HTTP_STATUS_OK)
+      .json({
+        message: 'Profile has been successfully updated!'
+      });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.checkToken = (req, res) => {
