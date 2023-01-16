@@ -1,3 +1,6 @@
+import HttpStatusConstants from '../constants/HttpStatusConstants';
+import User from '../models/User';
+
 const mongoose = require('mongoose');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
@@ -5,8 +8,6 @@ const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const fs = require('fs');
-const HttpStatusConstants = require('../constants/HttpStatusConstants');
-const User = require('../models/User');
 
 const {
   HTTP_STATUS_OK,

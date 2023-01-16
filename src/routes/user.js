@@ -20,9 +20,14 @@ router.post('/registration', [
   check('password', 'Password should be at least 6 characters').isLength({ min: 6 })
 ], doRegistration);
 
-router.post('/upload-profile', upload.single('image'), uploadImageProfileData);
+router.post('/upload-profile', upload.single('picture'), uploadImageProfileData);
 
-router.put('/update-profile/:userId', updateProfileByUserId);
+router.put('/update-profile/:userId', [
+  check('name', 'Name should be at least 4 characters').isLength({ min: 4 }),
+  check('email', 'Email should be valid').isEmail(),
+  check('phoneNo', 'Phone Number should be at least 10 characters').isLength({ min: 10, max: 13 }),
+  check('password', 'Password should be at least 6 characters').isLength({ min: 6 })
+], updateProfileByUserId);
 
 router.post('/login', doLogin);
 
