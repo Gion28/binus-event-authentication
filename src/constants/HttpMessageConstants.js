@@ -14,7 +14,7 @@ const httpMessageConstants = {
   TOKEN_NOT_FOUND_EXPIRED: 'Token not found or expired! Please do reset password again!',
   UNABLE_UPDATE_PASSWORD: 'Unable to update the password',
   PASSWORD_SUCCESSFULLY_RESET: 'Password reset successfully',
-  UPDATE_PROFILE_SUCCESSFULY_UPDATED: 'Profile has been successfully updated!',
+  UPDATE_PROFILE_SUCCESSFULY: 'Profile has been successfully updated!',
   EVENT_SUCCESSFULLY_DELETED: 'An Event has been successfully deleted!',
   EVENT_SUCCESSFULLY_EDITED: 'An Event has been successfully edited!',
   WRONG_TOKEN: 'No token provided!',

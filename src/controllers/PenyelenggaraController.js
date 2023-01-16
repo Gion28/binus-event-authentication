@@ -5,54 +5,126 @@ import PenyelenggaraService from '../services/PenyelenggaraService';
 
 const {
   HTTP_STATUS_OK,
-  HTTP_STATUS_BAD_REQUEST,
-  HTTP_STATUS_NOT_FOUND,
-  HTTP_STATUS_UNAUTHORIZED,
-  HTTP_STATUS_INTERNAL_SERVER_ERROR
+  HTTP_STATUS_BAD_REQUEST
 } = HttpStatusConstants;
 
 const {
   SUCCESSFULLY_REGISTRATION,
-  WRONG_INPUT_REGISTRATION,
   IMAGE_PROFILE_SUCCESSFULLY_UPLOADED,
-  EMAIL_NOT_FOUND,
-  EMAIL_PASSWORD_NOT_MATCH,
-  SUCCESSFULLY_SIGNIN,
-  USER_NOT_FOUND,
-  UNABLE_UPDATE_USER,
-  RESET_PASSWORD_SUCCESSFULLY,
-  TOKEN_NOT_FOUND_EXPIRED,
-  UNABLE_UPDATE_PASSWORD,
-  PASSWORD_SUCCESSFULLY_RESET,
-  UPDATE_PROFILE_SUCCESSFULY_UPDATED,
-  EVENT_SUCCESSFULLY_DELETED,
-  EVENT_SUCCESSFULLY_EDITED,
-  WRONG_TOKEN,
-  INVALID_TOKEN,
+  UPDATE_PROFILE_SUCCESSFULY
 } = httpMessageConstants;
 
 const {
-  doRegistrationData
+  getAllData,
+  doRegistrationData,
+  uploadImage,
+  doLoginUser,
+  updateProfileDataByPenyelenggaraId,
+  doResetPasswordData,
+  addNewPassword,
+  checkTokenData
 } = PenyelenggaraService;
 
 class PenyelenggaraController {
-    static doRegistration = async (req, res, next) => {
-      const errors = validationResult(req);
-
-      try {
-        const registration = await doRegistrationData(
-          errors, HTTP_STATUS_BAD_REQUEST, WRONG_INPUT_REGISTRATION, req, res
-        );
-        res
-          .status(HTTP_STATUS_OK)
-          .json({
-            message: SUCCESSFULLY_REGISTRATION,
-            data: registration
-          });
-      } catch (error) {
-        next(error);
-      }
+  static fetchAllData = async (req, res, next) => {
+    try {
+      const penyelenggaraList = await getAllData();
+      res.status(HTTP_STATUS_OK).send(penyelenggaraList);
+    } catch (error) {
+      next(error);
     }
+  }
+
+  static doRegistration = async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(HTTP_STATUS_BAD_REQUEST).json({
+        error: errors.array()[0].msg
+      });
+    }
+    try {
+      const registration = await doRegistrationData(req.body);
+      res
+        .status(HTTP_STATUS_OK)
+        .json({
+          message: SUCCESSFULLY_REGISTRATION,
+          data: registration
+        });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static uploadImageProfileData = async (req, res, next) => {
+    const { path, mimetype } = req.file;
+    const { penyelenggaraId } = req.body;
+
+    try {
+      await uploadImage(path, mimetype, penyelenggaraId);
+      res
+        .status(HTTP_STATUS_OK)
+        .json({
+          message: IMAGE_PROFILE_SUCCESSFULLY_UPLOADED
+        });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static doLogin = async (req, res, next) => {
+    const { email, password } = req.body;
+
+    try {
+      await doLoginUser(email, password, res);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static updateProfileByPenyelenggaraId = async (req, res, next) => {
+    const { penyelenggaraId } = req.params;
+
+    try {
+      await updateProfileDataByPenyelenggaraId(penyelenggaraId, req.body);
+      res
+        .status(HTTP_STATUS_OK)
+        .json({
+          message: UPDATE_PROFILE_SUCCESSFULY
+        });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static doResetPassword = async (req, res, next) => {
+    const { email } = req.body;
+
+    try {
+      await doResetPasswordData(email, res);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static createNewPassword = async (req, res, next) => {
+    const { password, token } = req.body;
+
+    try {
+      await addNewPassword(password, token, res);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static checkToken = async (req, res, next) => {
+    const token = req.header['x-access-token'] || req.body.token;
+
+    try {
+      await checkTokenData(token, res);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default PenyelenggaraController;

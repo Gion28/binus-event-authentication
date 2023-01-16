@@ -70,4 +70,4 @@ penyelenggaraSchema.methods = {
   }
 };
 
-module.exports = mongoose.model('Penyelenggara', userSchema, 'penyelenggara');
+module.exports = mongoose.model('Penyelenggara', penyelenggaraSchema, 'penyelenggara');

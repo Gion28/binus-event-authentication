@@ -1,6 +1,6 @@
 import express from 'express';
 import user from './user';
-import penyelenggaraRoute from '../controllers/'
+import penyelenggaraRoute from './PenyelenggaraRoute';
 
 const router = express.Router();
 
