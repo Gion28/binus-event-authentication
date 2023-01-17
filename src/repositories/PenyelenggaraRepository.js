@@ -12,8 +12,7 @@ const {
   HTTP_STATUS_OK,
   HTTP_STATUS_BAD_REQUEST,
   HTTP_STATUS_NOT_FOUND,
-  HTTP_STATUS_INTERNAL_SERVER_ERROR,
-  HTTP_STATUS_UNAUTHORIZED
+  HTTP_STATUS_INTERNAL_SERVER_ERROR
 } = HttpStatusConstants;
 const {
   EMAIL_NOT_FOUND,
@@ -24,9 +23,7 @@ const {
   TOKEN_NOT_FOUND_EXPIRED,
   PASSWORD_NOT_MATCH,
   UNABLE_UPDATE_PASSWORD,
-  PASSWORD_SUCCESSFULLY_RESET,
-  INVALID_TOKEN,
-  USER_NOT_FOUND,
+  PASSWORD_SUCCESSFULLY_RESET
 } = HttpMessageConstants;
 
 class PenyelenggaraRepository {
@@ -164,26 +161,6 @@ class PenyelenggaraRepository {
             });
         }
       );
-    }
-
-    static checkTokenData = async (token, res) => {
-      return jwt.verify(token, process.env.SECRET, (err, decode) => {
-        if (err) {
-          return res.status(HTTP_STATUS_UNAUTHORIZED).send({
-            error: INVALID_TOKEN
-          });
-        }
-
-        Penyelenggara.findById(decode._id, (error, penyelenggara) => {
-          if (error || !penyelenggara) {
-            return res.status(HTTP_STATUS_NOT_FOUND).send({
-              error: USER_NOT_FOUND
-            });
-          }
-
-          res.send({ penyelenggara });
-        });
-      });
     }
 }
 

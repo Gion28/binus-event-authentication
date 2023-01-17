@@ -21,8 +21,7 @@ const {
   doLoginUser,
   updateProfileDataByPenyelenggaraId,
   doResetPasswordData,
-  addNewPassword,
-  checkTokenData
+  addNewPassword
 } = PenyelenggaraService;
 
 class PenyelenggaraController {
@@ -111,16 +110,6 @@ class PenyelenggaraController {
 
     try {
       await addNewPassword(password, confirmPassword, token, res);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  static checkToken = async (req, res, next) => {
-    const token = req.header['x-access-token'] || req.body.token;
-
-    try {
-      await checkTokenData(token, res);
     } catch (error) {
       next(error);
     }

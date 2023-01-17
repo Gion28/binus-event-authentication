@@ -16,8 +16,7 @@ const {
   doLogin,
   updateProfileByMahasiswaId,
   doResetPassword,
-  createNewPassword,
-  checkToken
+  createNewPassword
 } = MahasiswaController;
 
 MahasiswaRoute.get('/', fetchAllData);
@@ -27,6 +26,5 @@ MahasiswaRoute.post('/login', doLogin);
 MahasiswaRoute.put('/update-profile/:mahasiswaId', JoiValidatorHandler(EditMahasiswaSchema), updateProfileByMahasiswaId);
 MahasiswaRoute.post('/reset-password', doResetPassword);
 MahasiswaRoute.post('/new-password', createNewPassword);
-MahasiswaRoute.post('/check-token', checkToken);
 
 export default MahasiswaRoute;

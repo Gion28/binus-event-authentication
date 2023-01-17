@@ -1,9 +1,5 @@
 import MahasiswaRepository from '../repositories/MahasiswaRepository';
-import HttpStatusConstants from '../constants/HttpStatusConstants';
-import HttpMessageConstants from '../constants/HttpMessageConstants';
 
-const { HTTP_STATUS_UNAUTHORIZED } = HttpStatusConstants;
-const { WRONG_TOKEN } = HttpMessageConstants;
 const {
   getAllDataMahasiswa,
   doRegistrationDataMahasiswa,
@@ -11,8 +7,7 @@ const {
   doLoginUserData,
   updateProfileDataByMahasiswaId,
   doResetPasswordData,
-  addNewPasswordData,
-  checkTokenData
+  addNewPasswordData
 } = MahasiswaRepository;
 
 class MahasiswaService {
@@ -42,15 +37,6 @@ class MahasiswaService {
 
     static addNewPassword = async (password, confirmPassword, token, res) => {
       return await addNewPasswordData(password, confirmPassword, token, res);
-    }
-
-    static checkTokenData = async (token, res) => {
-      if (!token) {
-        return res.status(HTTP_STATUS_UNAUTHORIZED).send({
-          error: WRONG_TOKEN
-        });
-      }
-      return await checkTokenData(token, res);
     }
 }
 

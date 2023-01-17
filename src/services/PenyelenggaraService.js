@@ -1,9 +1,5 @@
 import PenyelenggaraRepository from '../repositories/PenyelenggaraRepository';
-import HttpStatusConstants from '../constants/HttpStatusConstants';
-import HttpMessageConstants from '../constants/HttpMessageConstants';
 
-const { HTTP_STATUS_UNAUTHORIZED } = HttpStatusConstants;
-const { WRONG_TOKEN } = HttpMessageConstants;
 const {
   getAllDataPenyelenggara,
   doRegistrationDataPenyelenggara,
@@ -11,8 +7,7 @@ const {
   doLoginUserData,
   updateProfileDataByPenyelenggaraId,
   doResetPasswordData,
-  addNewPasswordData,
-  checkTokenData
+  addNewPasswordData
 } = PenyelenggaraRepository;
 
 class PenyelenggaraService {
@@ -42,15 +37,6 @@ class PenyelenggaraService {
 
     static addNewPassword = async (password, confirmPassword, token, res) => {
       return await addNewPasswordData(password, confirmPassword, token, res);
-    }
-
-    static checkTokenData = async (token, res) => {
-      if (!token) {
-        return res.status(HTTP_STATUS_UNAUTHORIZED).send({
-          error: WRONG_TOKEN
-        });
-      }
-      return await checkTokenData(token, res);
     }
 }
 

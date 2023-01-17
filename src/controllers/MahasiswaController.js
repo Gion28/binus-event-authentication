@@ -21,8 +21,7 @@ const {
   doLoginUser,
   updateProfileDataByMahasiswaId,
   doResetPasswordData,
-  addNewPassword,
-  checkTokenData
+  addNewPassword
 } = MahasiswaService;
 
 class MahasiswaController {
@@ -111,16 +110,6 @@ class MahasiswaController {
 
     try {
       await addNewPassword(password, confirmPassword, token, res);
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  static checkToken = async (req, res, next) => {
-    const token = req.header['x-access-token'] || req.body.token;
-
-    try {
-      await checkTokenData(token, res);
     } catch (error) {
       next(error);
     }

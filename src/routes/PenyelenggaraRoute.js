@@ -16,8 +16,7 @@ const {
   doLogin,
   updateProfileByPenyelenggaraId,
   doResetPassword,
-  createNewPassword,
-  checkToken
+  createNewPassword
 } = PenyelenggaraController;
 
 PenyelenggaraRoute.get('/', fetchAllData);
@@ -27,6 +26,5 @@ PenyelenggaraRoute.post('/login', doLogin);
 PenyelenggaraRoute.put('/update-profile/:penyelenggaraId', JoiValidatorHandler(EditPenyelenggaraSchema), updateProfileByPenyelenggaraId);
 PenyelenggaraRoute.post('/reset-password', doResetPassword);
 PenyelenggaraRoute.post('/new-password', createNewPassword);
-PenyelenggaraRoute.post('/check-token', checkToken);
 
 export default PenyelenggaraRoute;
