@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const crypto = require('crypto');
 const uuidv1 = require('uuid/v1');
 
-const userSchema = new mongoose.Schema({
-  userId: {
+const penyelenggaraSchema = new mongoose.Schema({
+  penyelenggaraId: {
     type: String
   },
   name: {
@@ -11,11 +11,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 4,
     trim: true
-  },
-  nim: {
-    type: String,
-    required: true,
-    unique: true
   },
   email: {
     type: String,
@@ -29,16 +24,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 10,
     maxlength: 13
-  },
-  religion: {
-    type: String,
-    enum: ['Buddha', 'Hindu', 'Islam', 'Katolik', 'Kristen', 'Konghucu'],
-    require: true
-  },
-  gender: {
-    type: String,
-    enum: ['Male', 'Female'],
-    require: true
   },
   image: {
     data: Buffer,
@@ -57,7 +42,7 @@ const userSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-userSchema.virtual('password')
+penyelenggaraSchema.virtual('password')
   .set(function (password) {
     this.newPassword = password;
     this.salt = uuidv1();
@@ -67,7 +52,7 @@ userSchema.virtual('password')
     return this.newPassword;
   });
 
-userSchema.methods = {
+penyelenggaraSchema.methods = {
   authenticate(plainPassword) {
     return this.securePassword(plainPassword) === this.encrypt_password;
   },
@@ -85,4 +70,4 @@ userSchema.methods = {
   }
 };
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Penyelenggara', penyelenggaraSchema, 'penyelenggara');
