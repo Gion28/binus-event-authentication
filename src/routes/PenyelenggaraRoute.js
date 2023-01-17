@@ -20,7 +20,7 @@ const {
   checkToken
 } = PenyelenggaraController;
 
-PenyelenggaraRoute.get('/penyelenggara', fetchAllData);
+PenyelenggaraRoute.get('/', fetchAllData);
 PenyelenggaraRoute.post('/registration', JoiValidatorHandler(CreatePenyelenggaraSchema), doRegistration);
 PenyelenggaraRoute.post('/upload-profile', upload.single('image'), uploadImageProfileData);
 PenyelenggaraRoute.post('/login', doLogin);

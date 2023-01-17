@@ -1,39 +1,39 @@
-import PenyelenggaraRepository from '../repositories/PenyelenggaraRepository';
+import MahasiswaRepository from '../repositories/MahasiswaRepository';
 import HttpStatusConstants from '../constants/HttpStatusConstants';
 import HttpMessageConstants from '../constants/HttpMessageConstants';
 
 const { HTTP_STATUS_UNAUTHORIZED } = HttpStatusConstants;
 const { WRONG_TOKEN } = HttpMessageConstants;
 const {
-  getAllDataPenyelenggara,
-  doRegistrationDataPenyelenggara,
+  getAllDataMahasiswa,
+  doRegistrationDataMahasiswa,
   uploadImageData,
   doLoginUserData,
-  updateProfileDataByPenyelenggaraId,
+  updateProfileDataByMahasiswaId,
   doResetPasswordData,
   addNewPasswordData,
   checkTokenData
-} = PenyelenggaraRepository;
+} = MahasiswaRepository;
 
-class PenyelenggaraService {
+class MahasiswaService {
     static getAllData = async () => {
-      return await getAllDataPenyelenggara();
+      return await getAllDataMahasiswa();
     }
 
     static doRegistrationData = async (payload) => {
-      return await doRegistrationDataPenyelenggara(payload);
+      return await doRegistrationDataMahasiswa(payload);
     }
 
-    static uploadImage = async (path, mimetype, penyelenggaraId) => {
-      return await uploadImageData(path, mimetype, penyelenggaraId);
+    static uploadImage = async (path, mimetype, mahasiswaId) => {
+      return await uploadImageData(path, mimetype, mahasiswaId);
     }
 
     static doLoginUser = async (email, password, res) => {
       return await doLoginUserData(email, password, res);
     }
 
-    static updateProfileDataByPenyelenggaraId = async (penyelenggaraId, payload) => {
-      return await updateProfileDataByPenyelenggaraId(penyelenggaraId, payload);
+    static updateProfileDataByMahasiswaId = async (mahasiswaId, payload) => {
+      return await updateProfileDataByMahasiswaId(mahasiswaId, payload);
     }
 
     static doResetPasswordData = async (email, res) => {
@@ -54,4 +54,4 @@ class PenyelenggaraService {
     }
 }
 
-export default PenyelenggaraService;
+export default MahasiswaService;

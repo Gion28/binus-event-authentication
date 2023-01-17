@@ -12,6 +12,7 @@ const httpMessageConstants = {
   UNABLE_UPDATE_USER: 'Unable to update the user. Please check again!',
   RESET_PASSWORD_SUCCESSFULLY: 'Password reset email successfully sent!',
   TOKEN_NOT_FOUND_EXPIRED: 'Token not found or expired! Please do reset password again!',
+  PASSWORD_NOT_MATCH: 'Password does not match! Please check again your password!',
   UNABLE_UPDATE_PASSWORD: 'Unable to update the password',
   PASSWORD_SUCCESSFULLY_RESET: 'Password reset successfully',
   UPDATE_PROFILE_SUCCESSFULY: 'Profile has been successfully updated!',

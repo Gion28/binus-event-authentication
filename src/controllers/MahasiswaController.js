@@ -1,7 +1,7 @@
 import { validationResult } from 'express-validator';
 import HttpStatusConstants from '../constants/HttpStatusConstants';
 import httpMessageConstants from '../constants/HttpMessageConstants';
-import PenyelenggaraService from '../services/PenyelenggaraService';
+import MahasiswaService from '../services/MahasiswaService';
 
 const {
   HTTP_STATUS_OK,
@@ -19,17 +19,17 @@ const {
   doRegistrationData,
   uploadImage,
   doLoginUser,
-  updateProfileDataByPenyelenggaraId,
+  updateProfileDataByMahasiswaId,
   doResetPasswordData,
   addNewPassword,
   checkTokenData
-} = PenyelenggaraService;
+} = MahasiswaService;
 
-class PenyelenggaraController {
+class MahasiswaController {
   static fetchAllData = async (req, res, next) => {
     try {
-      const penyelenggaraList = await getAllData();
-      res.status(HTTP_STATUS_OK).send(penyelenggaraList);
+      const mahasiswaList = await getAllData();
+      res.status(HTTP_STATUS_OK).send(mahasiswaList);
     } catch (error) {
       next(error);
     }
@@ -57,10 +57,10 @@ class PenyelenggaraController {
 
   static uploadImageProfileData = async (req, res, next) => {
     const { path, mimetype } = req.file;
-    const { penyelenggaraId } = req.body;
+    const { mahasiswaId } = req.body;
 
     try {
-      await uploadImage(path, mimetype, penyelenggaraId);
+      await uploadImage(path, mimetype, mahasiswaId);
       res
         .status(HTTP_STATUS_OK)
         .json({
@@ -81,11 +81,11 @@ class PenyelenggaraController {
     }
   }
 
-  static updateProfileByPenyelenggaraId = async (req, res, next) => {
-    const { penyelenggaraId } = req.params;
+  static updateProfileByMahasiswaId = async (req, res, next) => {
+    const { mahasiswaId } = req.params;
 
     try {
-      await updateProfileDataByPenyelenggaraId(penyelenggaraId, req.body);
+      await updateProfileDataByMahasiswaId(mahasiswaId, req.body);
       res
         .status(HTTP_STATUS_OK)
         .json({
@@ -127,4 +127,4 @@ class PenyelenggaraController {
   }
 }
 
-export default PenyelenggaraController;
+export default MahasiswaController;

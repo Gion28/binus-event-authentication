@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
-import Penyelenggara from '../models/Penyelenggara';
+import Mahasiswa from '../models/Mahasiswa';
 import HttpMessageConstants from '../constants/HttpMessageConstants';
 import HttpStatusConstants from '../constants/HttpStatusConstants';
 import { sendEmail } from '../utils/CommonUtils';
@@ -29,21 +29,21 @@ const {
   USER_NOT_FOUND,
 } = HttpMessageConstants;
 
-class PenyelenggaraRepository {
-    static getAllDataPenyelenggara = async () => {
-      return Penyelenggara.find({});
+class MahasiswaRepository {
+    static getAllDataMahasiswa = async () => {
+      return Mahasiswa.find({});
     }
 
-    static doRegistrationDataPenyelenggara = async (payload) => {
-      return Penyelenggara.create(payload);
+    static doRegistrationDataMahasiswa = async (payload) => {
+      return Mahasiswa.create(payload);
     }
 
-    static uploadImageData = async (path, mimetype, penyelenggaraId) => {
+    static uploadImageData = async (path, mimetype, mahasiswaId) => {
       fs.readFile(path, async (err, data) => {
         if (err) throw err;
 
-        await Penyelenggara.updateOne(
-          { _id: mongoose.Types.ObjectId(penyelenggaraId) },
+        await Mahasiswa.updateOne(
+          { _id: mongoose.Types.ObjectId(mahasiswaId) },
           {
             $set: {
               image: {
@@ -57,22 +57,22 @@ class PenyelenggaraRepository {
     }
 
     static doLoginUserData = async (email, password, res) => {
-      return Penyelenggara.findOne({ email }, (err, penyelenggara) => {
-        if (err || !penyelenggara) {
+      return Mahasiswa.findOne({ email }, (err, mahasiswa) => {
+        if (err || !mahasiswa) {
           return res.status(HTTP_STATUS_BAD_REQUEST).json({
             error: EMAIL_NOT_FOUND
           });
         }
 
         // Authenticate User
-        if (!penyelenggara.authenticate(password)) {
+        if (!mahasiswa.authenticate(password)) {
           return res.status(HTTP_STATUS_BAD_REQUEST).json({
             error: EMAIL_PASSWORD_NOT_MATCH
           });
         }
 
         // Create Token
-        const token = jwt.sign({ _id: penyelenggara._id }, process.env.SECRET);
+        const token = jwt.sign({ _id: mahasiswa._id }, process.env.SECRET);
 
         // Put token in cookie
         const date = new Date();
@@ -80,25 +80,25 @@ class PenyelenggaraRepository {
         res.cookie('token', token, { expires: date });
 
         // Send response
-        const { _id, name, email } = penyelenggara;
+        const { _id, name, email } = mahasiswa;
         return res.json({
           message: SUCCESSFULLY_SIGNIN,
           token,
-          penyelenggara: { _id, name, email }
+          mahasiswa: { _id, name, email }
         });
       });
     }
 
-    static updateProfileDataByPenyelenggaraId = async (penyelenggaraId, payload) => {
-      return Penyelenggara.updateOne(
-        { _id: new mongoose.Types.ObjectId(penyelenggaraId) },
+    static updateProfileDataByMahasiswaId = async (mahasiswaId, payload) => {
+      return Mahasiswa.updateOne(
+        { _id: new mongoose.Types.ObjectId(mahasiswaId) },
         { $set: payload }
       );
     }
 
     static doResetPasswordData = async (email, res) => {
-      Penyelenggara.findOne({ email }, (err, penyelenggara) => {
-        if (err || !penyelenggara) {
+      Mahasiswa.findOne({ email }, (err, mahasiswa) => {
+        if (err || !mahasiswa) {
           return res.status(HTTP_STATUS_NOT_FOUND).send({ error: 'User not found' });
         }
 
@@ -107,7 +107,7 @@ class PenyelenggaraRepository {
         const resetExpires = Date.now() + 3600000; // 1 hour
 
         // Save the token and expiration date to the user's account
-        Penyelenggara.findByIdAndUpdate(penyelenggara._id,
+        Mahasiswa.findByIdAndUpdate(mahasiswa._id,
           { resetToken, resetExpires },
           { new: true, useFindAndModify: false },
           (error) => {
@@ -131,10 +131,10 @@ class PenyelenggaraRepository {
           error: PASSWORD_NOT_MATCH
         });
       }
-      return Penyelenggara.findOne(
+      return Mahasiswa.findOne(
         { resetToken: token, resetExpires: { $gt: Date.now() } },
-        (err, penyelenggara) => {
-          if (err || !penyelenggara) {
+        (err, mahasiswa) => {
+          if (err || !mahasiswa) {
             return res.status(HTTP_STATUS_NOT_FOUND).json({
               error: TOKEN_NOT_FOUND_EXPIRED
             });
@@ -144,7 +144,7 @@ class PenyelenggaraRepository {
           const hashedPassword = bcrypt.hashSync(password, 8);
 
           // Save the new password to the user's account
-          Penyelenggara.findByIdAndUpdate(penyelenggara._id,
+          Mahasiswa.findByIdAndUpdate(mahasiswa._id,
             {
               encrypt_password: hashedPassword,
               resetToken: null,
@@ -174,17 +174,17 @@ class PenyelenggaraRepository {
           });
         }
 
-        Penyelenggara.findById(decode._id, (error, penyelenggara) => {
-          if (error || !penyelenggara) {
+        Mahasiswa.findById(decode._id, (error, mahasiswa) => {
+          if (error || !mahasiswa) {
             return res.status(HTTP_STATUS_NOT_FOUND).send({
               error: USER_NOT_FOUND
             });
           }
 
-          res.send({ penyelenggara });
+          res.send({ mahasiswa });
         });
       });
     }
 }
 
-export default PenyelenggaraRepository;
+export default MahasiswaRepository;
