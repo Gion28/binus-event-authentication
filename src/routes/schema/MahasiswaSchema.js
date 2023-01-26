@@ -37,13 +37,6 @@ export const CreateMahasiswaSchema = Joi.object({
 
 export const EditMahasiswaSchema = Joi.object({
   penyelenggaraId: Joi.string().allow('', null).optional(),
-  name: Joi.string().min(4).required().messages({
-    'string.base': 'Name should be a type of text!',
-    'string.empty': 'Name cannot be an empty field!',
-    'string.min': 'Name should have at least 4 characters!',
-    'any.required': 'Name is a required field!'
-  }),
-  nim: Joi.string().required(),
   email: Joi.string().email().min(12).required()
     .messages({
       'string.base': 'Email should be a type of text!',

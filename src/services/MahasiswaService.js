@@ -2,6 +2,7 @@ import MahasiswaRepository from '../repositories/MahasiswaRepository';
 
 const {
   getAllDataMahasiswa,
+  getMahasiswaDetailData,
   doRegistrationDataMahasiswa,
   uploadImageData,
   doLoginUserData,
@@ -13,6 +14,10 @@ const {
 class MahasiswaService {
     static getAllData = async () => {
       return await getAllDataMahasiswa();
+    }
+
+    static getMahasiswaDetail = async (mahasiswaId) => {
+      return await getMahasiswaDetailData(mahasiswaId);
     }
 
     static doRegistrationData = async (payload) => {
@@ -31,8 +36,8 @@ class MahasiswaService {
       return await updateProfileDataByMahasiswaId(mahasiswaId, payload);
     }
 
-    static doResetPasswordData = async (email, res) => {
-      return await doResetPasswordData(email, res);
+    static doResetPasswordData = async (email, mahasiswaId, res) => {
+      return await doResetPasswordData(email, mahasiswaId, res);
     }
 
     static addNewPassword = async (password, confirmPassword, token, res) => {

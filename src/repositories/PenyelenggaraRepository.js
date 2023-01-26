@@ -31,6 +31,15 @@ class PenyelenggaraRepository {
       return Penyelenggara.find({});
     }
 
+    static getPenyelenggaraDetailData = async (penyelenggaraId) => {
+      return Penyelenggara.findOne(
+        { _id: mongoose.Types.ObjectId(penyelenggaraId) },
+        {
+          salt: 0, encrypt_password: 0, resetExpires: 0, resetToken: 0
+        }
+      );
+    }
+
     static doRegistrationDataPenyelenggara = async (payload) => {
       return Penyelenggara.create(payload);
     }
@@ -93,33 +102,35 @@ class PenyelenggaraRepository {
       );
     }
 
-    static doResetPasswordData = async (email, res) => {
-      Penyelenggara.findOne({ email }, (err, penyelenggara) => {
-        if (err || !penyelenggara) {
-          return res.status(HTTP_STATUS_NOT_FOUND).send({ error: 'User not found' });
-        }
+    static doResetPasswordData = async (email, penyelenggaraId, res) => {
+      Penyelenggara.findOne(
+        { _id: new mongoose.Types.ObjectId(penyelenggaraId) }, (err, penyelenggara) => {
+          if (err || !penyelenggara) {
+            return res.status(HTTP_STATUS_NOT_FOUND).send({ error: 'User not found' });
+          }
 
-        // Generate a password reset token
-        const resetToken = crypto.randomBytes(20).toString('hex');
-        const resetExpires = Date.now() + 3600000; // 1 hour
+          // Generate a password reset token
+          const resetToken = crypto.randomBytes(20).toString('hex');
+          const resetExpires = Date.now() + 3600000; // 1 hour
 
-        // Save the token and expiration date to the user's account
-        Penyelenggara.findByIdAndUpdate(penyelenggara._id,
-          { resetToken, resetExpires },
-          { new: true, useFindAndModify: false },
-          (error) => {
-            if (error) {
-              return res.status(HTTP_STATUS_BAD_REQUEST).json({
-                error: UNABLE_UPDATE_USER
+          // Save the token and expiration date to the user's account
+          Penyelenggara.findByIdAndUpdate(penyelenggara._id,
+            { resetToken, resetExpires },
+            { new: true, useFindAndModify: false },
+            (error) => {
+              if (error) {
+                return res.status(HTTP_STATUS_BAD_REQUEST).json({
+                  error: UNABLE_UPDATE_USER
+                });
+              }
+              // Send email with the password reset link
+              sendEmail(email, 'penyelenggara', resetToken);
+              res.status(HTTP_STATUS_OK).json({
+                message: RESET_PASSWORD_SUCCESSFULLY
               });
-            }
-            // Send email with the password reset link
-            sendEmail(email, resetToken);
-            res.status(HTTP_STATUS_OK).json({
-              message: RESET_PASSWORD_SUCCESSFULLY
             });
-          });
-      });
+        }
+      );
     }
 
     static addNewPasswordData = async (password, confirmPassword, token, res) => {

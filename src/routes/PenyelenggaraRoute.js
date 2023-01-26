@@ -11,6 +11,7 @@ const PenyelenggaraRoute = express.Router();
 
 const {
   fetchAllData,
+  fetchDetailPenyelenggara,
   doRegistration,
   uploadImageProfileData,
   doLogin,
@@ -20,11 +21,12 @@ const {
 } = PenyelenggaraController;
 
 PenyelenggaraRoute.get('/', fetchAllData);
+PenyelenggaraRoute.get('/:penyelenggaraId', fetchDetailPenyelenggara);
 PenyelenggaraRoute.post('/registration', JoiValidatorHandler(CreatePenyelenggaraSchema), doRegistration);
 PenyelenggaraRoute.post('/upload-profile', upload.single('image'), uploadImageProfileData);
 PenyelenggaraRoute.post('/login', doLogin);
 PenyelenggaraRoute.put('/update-profile/:penyelenggaraId', JoiValidatorHandler(EditPenyelenggaraSchema), updateProfileByPenyelenggaraId);
-PenyelenggaraRoute.post('/reset-password', doResetPassword);
-PenyelenggaraRoute.post('/new-password', createNewPassword);
+PenyelenggaraRoute.post('/reset-password/:penyelenggaraId', doResetPassword);
+PenyelenggaraRoute.post('/new-password/:token', createNewPassword);
 
 export default PenyelenggaraRoute;

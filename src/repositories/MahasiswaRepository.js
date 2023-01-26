@@ -31,6 +31,15 @@ class MahasiswaRepository {
       return Mahasiswa.find({});
     }
 
+    static getMahasiswaDetailData = async (mahasiswaId) => {
+      return Mahasiswa.findOne(
+        { _id: mongoose.Types.ObjectId(mahasiswaId) },
+        {
+          salt: 0, encrypt_password: 0, resetExpires: 0, resetToken: 0
+        }
+      );
+    }
+
     static doRegistrationDataMahasiswa = async (payload) => {
       return Mahasiswa.create(payload);
     }
@@ -93,33 +102,35 @@ class MahasiswaRepository {
       );
     }
 
-    static doResetPasswordData = async (email, res) => {
-      Mahasiswa.findOne({ email }, (err, mahasiswa) => {
-        if (err || !mahasiswa) {
-          return res.status(HTTP_STATUS_NOT_FOUND).send({ error: 'User not found' });
-        }
+    static doResetPasswordData = async (email, mahasiswaId, res) => {
+      Mahasiswa.findOne(
+        { _id: new mongoose.Types.ObjectId(mahasiswaId) }, (err, mahasiswa) => {
+          if (err || !mahasiswa) {
+            return res.status(HTTP_STATUS_NOT_FOUND).send({ error: 'User not found' });
+          }
 
-        // Generate a password reset token
-        const resetToken = crypto.randomBytes(20).toString('hex');
-        const resetExpires = Date.now() + 3600000; // 1 hour
+          // Generate a password reset token
+          const resetToken = crypto.randomBytes(20).toString('hex');
+          const resetExpires = Date.now() + 3600000; // 1 hour
 
-        // Save the token and expiration date to the user's account
-        Mahasiswa.findByIdAndUpdate(mahasiswa._id,
-          { resetToken, resetExpires },
-          { new: true, useFindAndModify: false },
-          (error) => {
-            if (error) {
-              return res.status(HTTP_STATUS_BAD_REQUEST).json({
-                error: UNABLE_UPDATE_USER
+          // Save the token and expiration date to the user's account
+          Mahasiswa.findByIdAndUpdate(mahasiswa._id,
+            { resetToken, resetExpires },
+            { new: true, useFindAndModify: false },
+            (error) => {
+              if (error) {
+                return res.status(HTTP_STATUS_BAD_REQUEST).json({
+                  error: UNABLE_UPDATE_USER
+                });
+              }
+              // Send email with the password reset link
+              sendEmail(email, 'mahasiswa', resetToken);
+              res.status(HTTP_STATUS_OK).json({
+                message: RESET_PASSWORD_SUCCESSFULLY
               });
-            }
-            // Send email with the password reset link
-            sendEmail(email, resetToken);
-            res.status(HTTP_STATUS_OK).json({
-              message: RESET_PASSWORD_SUCCESSFULLY
             });
-          });
-      });
+        }
+      );
     }
 
     static addNewPasswordData = async (password, confirmPassword, token, res) => {
