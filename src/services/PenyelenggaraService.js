@@ -2,6 +2,7 @@ import PenyelenggaraRepository from '../repositories/PenyelenggaraRepository';
 
 const {
   getAllDataPenyelenggara,
+  getPenyelenggaraDetailData,
   doRegistrationDataPenyelenggara,
   uploadImageData,
   doLoginUserData,
@@ -13,6 +14,10 @@ const {
 class PenyelenggaraService {
     static getAllData = async () => {
       return await getAllDataPenyelenggara();
+    }
+
+    static getPenyelenggaraDetail = async (penyelenggaraId) => {
+      return await getPenyelenggaraDetailData(penyelenggaraId);
     }
 
     static doRegistrationData = async (payload) => {
@@ -31,8 +36,8 @@ class PenyelenggaraService {
       return await updateProfileDataByPenyelenggaraId(penyelenggaraId, payload);
     }
 
-    static doResetPasswordData = async (email, res) => {
-      return await doResetPasswordData(email, res);
+    static doResetPasswordData = async (email, penyelenggaraId, res) => {
+      return await doResetPasswordData(email, penyelenggaraId, res);
     }
 
     static addNewPassword = async (password, confirmPassword, token, res) => {

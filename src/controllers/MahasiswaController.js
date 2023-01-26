@@ -16,6 +16,7 @@ const {
 
 const {
   getAllData,
+  getMahasiswaDetail,
   doRegistrationData,
   uploadImage,
   doLoginUser,
@@ -29,6 +30,17 @@ class MahasiswaController {
     try {
       const mahasiswaList = await getAllData();
       res.status(HTTP_STATUS_OK).send(mahasiswaList);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static fetchDetailMahasiswa = async (req, res, next) => {
+    const { mahasiswaId } = req.params;
+
+    try {
+      const mahasiswaDetail = await getMahasiswaDetail(mahasiswaId);
+      res.status(HTTP_STATUS_OK).send(mahasiswaDetail);
     } catch (error) {
       next(error);
     }
@@ -96,17 +108,19 @@ class MahasiswaController {
   }
 
   static doResetPassword = async (req, res, next) => {
+    const { mahasiswaId } = req.params;
     const { email } = req.body;
 
     try {
-      await doResetPasswordData(email, res);
+      await doResetPasswordData(email, mahasiswaId, res);
     } catch (error) {
       next(error);
     }
   }
 
   static createNewPassword = async (req, res, next) => {
-    const { password, confirmPassword, token } = req.body;
+    const { token } = req.params;
+    const { password, confirmPassword } = req.body;
 
     try {
       await addNewPassword(password, confirmPassword, token, res);

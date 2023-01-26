@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-export const sendEmail = (email, token) => {
+export const sendEmail = (email, type, token) => {
   // Create a transporter object to send the email
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -17,7 +17,7 @@ export const sendEmail = (email, token) => {
     subject: 'Password reset link',
     text: `You are receiving this email because you (or someone else) has requested a password reset for your account.
     Please click on the following link, or paste this into your browser to complete the process:
-    http://binus-event.com/reset-password/
+    http://binus-event.com/${type}/new-password/${token}
     If you did not request this, please ignore this email and your password will remain unchanged.`,
   };
 

@@ -11,6 +11,7 @@ const MahasiswaRoute = express.Router();
 
 const {
   fetchAllData,
+  fetchDetailMahasiswa,
   doRegistration,
   uploadImageProfileData,
   doLogin,
@@ -20,11 +21,12 @@ const {
 } = MahasiswaController;
 
 MahasiswaRoute.get('/', fetchAllData);
+MahasiswaRoute.get('/:mahasiswaId', fetchDetailMahasiswa);
 MahasiswaRoute.post('/registration', JoiValidatorHandler(CreateMahasiswaSchema), doRegistration);
 MahasiswaRoute.post('/upload-profile', upload.single('image'), uploadImageProfileData);
 MahasiswaRoute.post('/login', doLogin);
 MahasiswaRoute.put('/update-profile/:mahasiswaId', JoiValidatorHandler(EditMahasiswaSchema), updateProfileByMahasiswaId);
-MahasiswaRoute.post('/reset-password', doResetPassword);
-MahasiswaRoute.post('/new-password', createNewPassword);
+MahasiswaRoute.post('/reset-password/:mahasiswaId', doResetPassword);
+MahasiswaRoute.post('/new-password/:token', createNewPassword);
 
 export default MahasiswaRoute;

@@ -33,12 +33,6 @@ export const CreatePenyelenggaraSchema = Joi.object({
 
 export const EditPenyelenggaraSchema = Joi.object({
   penyelenggaraId: Joi.string().allow('', null).optional(),
-  name: Joi.string().min(4).required().messages({
-    'string.base': 'Name should be a type of text!',
-    'string.empty': 'Name cannot be an empty field!',
-    'string.min': 'Name should have at least 4 characters!',
-    'any.required': 'Name is a required field!'
-  }),
   email: Joi.string().email().min(12).required()
     .messages({
       'string.base': 'Email should be a type of text!',

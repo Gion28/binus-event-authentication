@@ -16,6 +16,7 @@ const {
 
 const {
   getAllData,
+  getPenyelenggaraDetail,
   doRegistrationData,
   uploadImage,
   doLoginUser,
@@ -29,6 +30,17 @@ class PenyelenggaraController {
     try {
       const penyelenggaraList = await getAllData();
       res.status(HTTP_STATUS_OK).send(penyelenggaraList);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static fetchDetailPenyelenggara = async (req, res, next) => {
+    const { penyelenggaraId } = req.params;
+
+    try {
+      const penyelenggaraDetail = await getPenyelenggaraDetail(penyelenggaraId);
+      res.status(HTTP_STATUS_OK).send(penyelenggaraDetail);
     } catch (error) {
       next(error);
     }
@@ -96,17 +108,19 @@ class PenyelenggaraController {
   }
 
   static doResetPassword = async (req, res, next) => {
+    const { penyelenggaraId } = req.params;
     const { email } = req.body;
 
     try {
-      await doResetPasswordData(email, res);
+      await doResetPasswordData(email, penyelenggaraId, res);
     } catch (error) {
       next(error);
     }
   }
 
   static createNewPassword = async (req, res, next) => {
-    const { password, confirmPassword, token } = req.body;
+    const { token } = req.params;
+    const { password, confirmPassword } = req.body;
 
     try {
       await addNewPassword(password, confirmPassword, token, res);
