@@ -6,7 +6,7 @@ const penyelenggaraSchema = new mongoose.Schema({
   penyelenggaraId: {
     type: String
   },
-  name: {
+  organizationName: {
     type: String,
     required: true,
     minlength: 4,
@@ -25,9 +25,14 @@ const penyelenggaraSchema = new mongoose.Schema({
     minlength: 10,
     maxlength: 13
   },
-  image: {
+  logo: {
     data: Buffer,
     contentType: String
+  },
+  organizationType: {
+    type: String,
+    enum: ['Himpunan', 'UKM', 'Binus'],
+    require: true
   },
   encrypt_password: {
     type: String,

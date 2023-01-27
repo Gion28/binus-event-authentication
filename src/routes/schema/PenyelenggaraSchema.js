@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 export const CreatePenyelenggaraSchema = Joi.object({
   penyelenggaraId: Joi.string().allow('', null).optional(),
-  name: Joi.string().min(4).required().messages({
+  organizationName: Joi.string().min(4).required().messages({
     'string.base': 'Name should be a type of text!',
     'string.empty': 'Name cannot be an empty field!',
     'string.min': 'Name should have at least 4 characters!',
@@ -22,7 +22,8 @@ export const CreatePenyelenggaraSchema = Joi.object({
       'string.max': 'Phone Number should have at most 13 characters!',
       'any.required': 'Phone Number is a required field!'
     }),
-  image: Joi.binary().allow('', null).optional(),
+  logo: Joi.binary().allow('', null).optional(),
+  organizationType: Joi.string().required().valid('Himpunan', 'UKM', 'Binus'),
   password: Joi.string().min(6).required().messages({
     'string.base': 'Password should be a type of text!',
     'string.empty': 'Password cannot be an empty field!',
@@ -47,5 +48,6 @@ export const EditPenyelenggaraSchema = Joi.object({
       'string.max': 'Phone Number should have at most 13 characters!',
       'any.required': 'Phone Number is a required field!'
     }),
-  image: Joi.binary().allow('', null).optional()
+  logo: Joi.binary().allow('', null).optional(),
+  organizationType: Joi.string().required().valid('Himpunan', 'UKM', 'Binus')
 });

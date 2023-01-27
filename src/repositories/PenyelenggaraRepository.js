@@ -52,7 +52,7 @@ class PenyelenggaraRepository {
           { _id: mongoose.Types.ObjectId(penyelenggaraId) },
           {
             $set: {
-              image: {
+              logo: {
                 data,
                 contentType: mimetype
               }
@@ -86,11 +86,11 @@ class PenyelenggaraRepository {
         res.cookie('token', token, { expires: date });
 
         // Send response
-        const { _id, name, email } = penyelenggara;
+        const { _id, organizationName, email } = penyelenggara;
         return res.json({
           message: SUCCESSFULLY_SIGNIN,
           token,
-          penyelenggara: { _id, name, email }
+          penyelenggara: { _id, organizationName, email }
         });
       });
     }
@@ -102,9 +102,9 @@ class PenyelenggaraRepository {
       );
     }
 
-    static doResetPasswordData = async (email, penyelenggaraId, res) => {
+    static doResetPasswordData = async (email, res) => {
       Penyelenggara.findOne(
-        { _id: new mongoose.Types.ObjectId(penyelenggaraId) }, (err, penyelenggara) => {
+        { email }, (err, penyelenggara) => {
           if (err || !penyelenggara) {
             return res.status(HTTP_STATUS_NOT_FOUND).send({ error: 'User not found' });
           }

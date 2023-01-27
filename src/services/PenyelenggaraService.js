@@ -36,8 +36,8 @@ class PenyelenggaraService {
       return await updateProfileDataByPenyelenggaraId(penyelenggaraId, payload);
     }
 
-    static doResetPasswordData = async (email, penyelenggaraId, res) => {
-      return await doResetPasswordData(email, penyelenggaraId, res);
+    static doResetPasswordData = async (email, res) => {
+      return await doResetPasswordData(email, res);
     }
 
     static addNewPassword = async (password, confirmPassword, token, res) => {

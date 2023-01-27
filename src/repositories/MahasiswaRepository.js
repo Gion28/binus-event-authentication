@@ -102,9 +102,9 @@ class MahasiswaRepository {
       );
     }
 
-    static doResetPasswordData = async (email, mahasiswaId, res) => {
+    static doResetPasswordData = async (email, res) => {
       Mahasiswa.findOne(
-        { _id: new mongoose.Types.ObjectId(mahasiswaId) }, (err, mahasiswa) => {
+        { email }, (err, mahasiswa) => {
           if (err || !mahasiswa) {
             return res.status(HTTP_STATUS_NOT_FOUND).send({ error: 'User not found' });
           }

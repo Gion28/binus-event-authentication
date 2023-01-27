@@ -26,7 +26,7 @@ PenyelenggaraRoute.post('/registration', JoiValidatorHandler(CreatePenyelenggara
 PenyelenggaraRoute.post('/upload-profile', upload.single('image'), uploadImageProfileData);
 PenyelenggaraRoute.post('/login', doLogin);
 PenyelenggaraRoute.put('/update-profile/:penyelenggaraId', JoiValidatorHandler(EditPenyelenggaraSchema), updateProfileByPenyelenggaraId);
-PenyelenggaraRoute.post('/reset-password/:penyelenggaraId', doResetPassword);
+PenyelenggaraRoute.post('/reset-password', doResetPassword);
 PenyelenggaraRoute.post('/new-password/:token', createNewPassword);
 
 export default PenyelenggaraRoute;
