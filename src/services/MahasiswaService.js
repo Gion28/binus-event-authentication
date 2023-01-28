@@ -36,8 +36,8 @@ class MahasiswaService {
       return await updateProfileDataByMahasiswaId(mahasiswaId, payload);
     }
 
-    static doResetPasswordData = async (email, mahasiswaId, res) => {
-      return await doResetPasswordData(email, mahasiswaId, res);
+    static doResetPasswordData = async (email, res) => {
+      return await doResetPasswordData(email, res);
     }
 
     static addNewPassword = async (password, confirmPassword, token, res) => {

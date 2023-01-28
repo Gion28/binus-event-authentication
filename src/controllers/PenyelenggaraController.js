@@ -108,11 +108,10 @@ class PenyelenggaraController {
   }
 
   static doResetPassword = async (req, res, next) => {
-    const { penyelenggaraId } = req.params;
     const { email } = req.body;
 
     try {
-      await doResetPasswordData(email, penyelenggaraId, res);
+      await doResetPasswordData(email, res);
     } catch (error) {
       next(error);
     }
