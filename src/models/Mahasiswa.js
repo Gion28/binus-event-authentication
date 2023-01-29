@@ -40,6 +40,9 @@ const mahasiswaSchema = new mongoose.Schema({
     enum: ['Male', 'Female'],
     require: true
   },
+  preferenceList: {
+    type: [String]
+  },
   image: {
     data: Buffer,
     contentType: String

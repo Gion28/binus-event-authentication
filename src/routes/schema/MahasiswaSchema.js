@@ -26,6 +26,7 @@ export const CreateMahasiswaSchema = Joi.object({
   religion: Joi.string().required()
     .valid('Buddha', 'Hindu', 'Islam', 'Katolik', 'Kristen', 'Konghucu'),
   gender: Joi.string().required().valid('Male', 'Female'),
+  preferenceList: Joi.array().items(Joi.string().allow('', null).optional()),
   image: Joi.binary().allow('', null).optional(),
   password: Joi.string().min(6).required().messages({
     'string.base': 'Password should be a type of text!',
@@ -54,5 +55,6 @@ export const EditMahasiswaSchema = Joi.object({
   religion: Joi.string().required()
     .valid('Buddha', 'Hindu', 'Islam', 'Katolik', 'Kristen', 'Konghucu'),
   gender: Joi.string().required().valid('Male', 'Female'),
+    preferenceList: Joi.array().items(Joi.string().allow('', null).optional()),
   image: Joi.binary().allow('', null).optional()
 });
